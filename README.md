@@ -1,4 +1,4 @@
-# 🏭 factory.create
+# 🏭 create-factory-function
 
 Syntactically concise, curry-friendly convenience method for factory function creation. Given a properties array and a prototype object, returns a factory function that returns objects with the specified prototype and properties.
 
@@ -22,48 +22,6 @@ or
 import factory from 'create-factory-function';
 ````
 
-## Purpose
-
-ES6 introduced concise object literal syntax and implicit function returns, which combine to permit highly concise factory function creation:
-
-````JavaScript
-const factoryFunction = (key1, key2) => ({ key1, key2 });
-````
-
-This style of object creation's reliance on object literals means that prototype assignment is not possible during object creation. Since prototype assigment post-creation is a performance sink, this makes prototype assignment difficult.
-
-One option is to use Object.create, but to assign properties to the returned object either one must pass the object verbose property descriptors:
-
-````JavaScript
-const factoryFunction = (key1, key2) => Object.create(someProto, {
-  key1: {
-    value: 'val1',
-    enumerable: true,
-    writable: true,
-  },
-  key2: {
-    value: 'val2',
-    enumerable: true,
-    writable: true,
-  },
-});
-````
-
-Or explicitly assign parameter values to argument values:
-
-````JavaScript
-const factoryFunction = (key1, key2) => {
-  const obj = Object.create(someProto);
-  obj.key1 = key1;
-  obj.key2 = key2;
-  return obj;
-};
-````
-
-Both options remove the concision ES6 permits.
-
-This package provides a syntactically concise method for creating factories that assign prototypes and properties during object creation. The method is constructed so as to be friendly to currying and flipped currying.
-
 ## API
 
 ### factory.create
@@ -86,9 +44,7 @@ Defaults to `Object.prototype` if no argument is provided.
 
 Optional. Array of:
 
-1. zero or more strings or symbols specifying the keys of properties to be assigned to objects created by the returned factory (e.g., 'key'),
-
-and:
+1. zero or more strings or symbols specifying the keys of properties to be assigned to objects created by the returned factory (e.g., 'key'), and:
 
 2. zero or more arrays specifying a string or symbol to serve as a property key in the first index, and a value of any type specifing the value in the second index (e.g., ['key', 'val']).
 
@@ -151,6 +107,49 @@ const obj = factoryFunction();
 
 Object.getPrototypeOf(obj); // [Object: null prototype] {}
 ````
+
+## Purpose
+
+ES6 introduced concise object literal syntax and implicit function returns, which combine to permit highly concise factory function creation:
+
+````JavaScript
+const factoryFunction = (key1, key2) => ({ key1, key2 });
+````
+
+This style of object creation's reliance on object literals means that prototype assignment is not possible during object creation. Since prototype assigment post-creation is a performance sink, this makes prototype assignment difficult.
+
+One option is to use Object.create, but to assign properties to the returned object either one must pass the object verbose property descriptors:
+
+````JavaScript
+const factoryFunction = (key1, key2) => Object.create(someProto, {
+  key1: {
+    value: 'val1',
+    enumerable: true,
+    writable: true,
+  },
+  key2: {
+    value: 'val2',
+    enumerable: true,
+    writable: true,
+  },
+});
+````
+
+Or explicitly assign parameter values to argument values:
+
+````JavaScript
+const factoryFunction = (key1, key2) => {
+  const obj = Object.create(someProto);
+  obj.key1 = key1;
+  obj.key2 = key2;
+  return obj;
+};
+````
+
+Both options remove the concision ES6 permits.
+
+This package provides a syntactically concise method for creating factories that assign prototypes and properties during object creation.
+
 
 ## Currying
 
