@@ -150,7 +150,6 @@ Both options remove the concision ES6 permits.
 
 This package provides a syntactically concise method for creating factories that assign prototypes and properties during object creation.
 
-
 ## Currying
 
 To keep the package minimal and comply with the single-use principle, currying is not implemented in factory.create. But the `create` method is structured so as to be friendly to currying. Currying `factory.create` allows for partial application of the prototype parameter:
@@ -215,4 +214,18 @@ leanne.getType(); // lion
 
 ernie.makeNoise(); // Caw!
 ernie.getType(); // eagle
+````
+
+## Test
+
+Tested with [AVA](https://www.npmjs.com/package/ava).
+
+````shell
+npm test
+````
+
+or
+
+````shell
+npx ava
 ````
