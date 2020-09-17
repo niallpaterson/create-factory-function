@@ -1,0 +1,48 @@
+{
+  "name": "factory.create",
+  "version": "1.1.0",
+  "description": "Syntactically concise, curry-friendly convenience method for factory function creation. Given a properties array and a prototype object, returns a factory function that returns objects with the specified prototype and properties.",
+  "main": "factory.js",
+  "scripts": {
+    "test": "ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niallpaterson/factory.create.git"
+  },
+  "files": [
+    "factory.js"
+  ],
+  "keywords": [
+    "factory function",
+    "factory",
+    "method",
+    "factory pattern",
+    "create",
+    "prototype",
+    "prototypal inheritence",
+    "object creator",
+    "object creation",
+    "object",
+    "curry",
+    "currying",
+    "flip"
+  ],
+  "author": "NiallJP",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/niallpaterson/factory.create/issues"
+  },
+  "homepage": "https://github.com/niallpaterson/factory.create#readme",
+  "devDependencies": {
+    "ava": "^3.12.1",
+    "commitlint": "^9.1.2",
+    "eslint": "^7.8.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-ava": "^11.0.0",
+    "eslint-plugin-import": "^2.22.0",
+    "husky": "^4.3.0",
+    "isobject": "^4.0.0"
+  },
+  "dependencies": {}
+}
