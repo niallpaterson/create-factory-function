@@ -1,4 +1,4 @@
-# 🏭 Factory.create
+# 🏭 factory.create
 
 Syntactically concise, curry-friendly convenience method for factory function creation. Given a properties array and a prototype object, returns a factory function that returns objects with the specified prototype and properties.
 
@@ -7,19 +7,19 @@ Syntactically concise, curry-friendly convenience method for factory function cr
 Install locally with npm:
 
 ````shell
-npm i factory.create
+npm i create-factory-function
 ````
 
 Import:
 
-````shell
-const factory = require('factory.create');
+````JavaScript
+const factory = require('create-factory-function');
 ````
 
 or
 
-````shell
-import factory from 'factory.create';
+````JavaScript
+import factory from 'create-factory-function';
 ````
 
 ## Purpose
@@ -101,7 +101,7 @@ When the returned factory is called, any arguments passed to the factory are ass
 Only values to be assigned when calling the returned factory:
 
 ````JavaScript
-const factory = require('factory.create');
+const factory = require('create-factory-function');
 
 const proto = {
   greetWorld() {
@@ -158,7 +158,7 @@ To keep the package minimal and comply with the single-use principle, currying i
 
 ````JavaScript
 const curry = require('curry-function');
-const factory = require('factory.create');
+const factory = require('create-factory-function');
 
 const animalProto = {
   makeNoise() {
@@ -182,7 +182,7 @@ The method can be flipped, allowing for partial application of the properties pa
 
 ````JavaScript
 const curry = require('curry-function');
-const factory = require('factory.create');
+const factory = require('create-factory-function');
 
 const lionProto = {
   type: 'lion',
