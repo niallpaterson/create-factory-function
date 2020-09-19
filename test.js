@@ -68,24 +68,34 @@ it('can accept both a prototype object and an array of keys', (t) => {
     'should assign correct keys');
 });
 
-it('uses the first object as proto if multiple objects are given', (t) => {
-  const firstProto = {};
-  const secondProto = {};
-  const obj = factory.create(firstProto, [], secondProto)();
+it('copies properties from object passed to props parameter', (t) => {
+  const properties = {
+    method: () => "I'm a method!",
+    key: 'val',
+  }
+  const obj = factory.create({}, [], properties)();
 
-  const actual = Object.getPrototypeOf(obj);
-  const expected = firstProto;
-  t.is(actual, expected,
-    ('should assign first object as prototype if multiple are passed'));
+  t.deepEqual(obj, properties);
 });
 
-it('uses the first array as keys array if multiple arrays are given', (t) => {
-  const firstKeys = ['firstArray'];
-  const secondKeys = ['secondArray'];
-  const obj = factory.create({}, firstKeys, secondKeys)();
 
-  const actual = Object.keys(obj);
-  const expected = firstKeys;
-  t.deepEqual(actual, expected,
-    ('should assign first array items as keys if multiple are passed'));
+it('returns an empty object inheriting from Object.prototype if passed no arguments', (t) => {
+  t.plan(3);
+  const obj = factory.create()();
+
+  const actual = isObject(obj);
+  const expected = true;
+
+  t.is(actual, expected,
+    'should return an object')
+
+  const actualSize = Object.keys(obj).length;
+  const expectedSize = 0;
+  t.is(actualSize, expectedSize, 
+  'should return an empty object');
+
+  const actualProto = Object.getPrototypeOf(obj);
+  const expectedProto = Object.prototype;
+  t.is(actualProto, expectedProto,
+    'should assign Object.prototype as proto of returned object');
 });
