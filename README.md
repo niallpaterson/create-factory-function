@@ -1,6 +1,6 @@
 # 🏭 create-factory-function
 
-Syntactically concise, curry-friendly convenience method for factory function creation. Given a properties array and a prototype object, returns a factory function that returns objects with the specified prototype and properties.
+Syntactically concise, curry-friendly convenience method for factory function creation.
 
 ## Usage
 
@@ -112,7 +112,7 @@ const factoryFunction = (key1, key2) => ({ key1, key2 });
 
 This style of object creation's reliance on object literals means that prototype assignment is not possible during object creation. Since prototype assigment post-creation is a performance sink, this makes prototype assignment difficult.
 
-One option is to use Object.create, but to assign properties to the returned object either one must pass the object verbose property descriptors:
+One option is to use Object.create, but to assign properties to the returned object either one must use verbose property descriptors:
 
 ````JavaScript
 const factoryFunction = (key1, key2) => Object.create(someProto, {
@@ -170,7 +170,7 @@ leanne.makeNoise(); // Roar!
 ernie.makeNoise(); // Caw!
 ````
 
-The parameters can be flipped, allowing for partial application of the properties parameter:
+Flipping the parameter order is possible, allowing for partial application of the keys/props parameter:
 
 ````JavaScript
 const curry = require('curry-function');
