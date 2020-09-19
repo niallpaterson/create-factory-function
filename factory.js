@@ -1,19 +1,15 @@
-const create = (proto, props) => (...vals) => {
-  if (!proto) proto = Object.prototype;
-  if (!props) props = [];
+const create = (proto, keys, props) => (...vals) => {
+  const obj = Object.create(proto || Object.prototype);
 
-  const obj = Object.create(proto);
+  if (keys) {
+    keys.forEach((key, i) => {
+      obj[key] = vals[i];
+    });
+  }
 
-  const keys = props.filter((x) => ['string', 'symbol'].includes(typeof x));
-  keys.forEach((key, i) => {
-    obj[key] = vals[i];
-  });
-
-  const preAssigned = props.filter((x) => Array.isArray(x));
-  preAssigned.forEach((prop) => {
-    const [key, val] = prop;
-    obj[key] = val;
-  });
+  if (props) {
+    Object.assign(obj, props);
+  }
 
   return obj;
 };
