@@ -29,7 +29,7 @@ import factory from 'create-factory-function';
 #### Syntax
 
 ````JavaScript
-factory.create([proto[, props]]);
+factory.create([proto[, keys[, props]]]);
 ````
 
 #### Parameters
@@ -40,21 +40,17 @@ Optional. Object specifying the prototype of objects created by the returned fac
 
 Defaults to `Object.prototype` if no argument is provided.
 
+`keys`
+
+Optional. Array of zero or more strings or symbols specifying the keys of properties to be assigned to objects created by the returned factory (e.g., 'key'). Used for keys without predefined values.
+
 `props`
 
-Optional. Array of:
-
-1. zero or more strings or symbols specifying the keys of properties to be assigned to objects created by the returned factory (e.g., 'key'), and:
-
-2. zero or more arrays specifying a string or symbol to serve as a property key in the first index, and a value of any type specifing the value in the second index (e.g., ['key', 'val']).
-
-Defaults to an empty array if no argument is provided.
-
-When the returned factory is called, any arguments passed to the factory are assigned to the strings/symbols specified by 1, in order. *The ordering does not include any instances of 2*. This means that arrays can feature anywhere in the properties array without affecting the order of value assignment to instances of 1. So a factory created with `[['key1', 'val'], 'key2']` will return the same object when called with a single argument as a factory created with `['key1', ['key2', 'val']]`.
+Optional. Object, the enumerable properties of which specify properties to be assigned to objects returned by the returned factory. Used for methods and keys with predefined values.
 
 ## Examples
 
-Only values to be assigned when calling the returned factory:
+Passing a proto:
 
 ````JavaScript
 const factory = require('create-factory-function');
@@ -65,45 +61,43 @@ const proto = {
   },
 };
 
+const factoryFunction = factory.create(proto);
+
+const obj = factoryFunction(); // {}
+
+Object.getPrototypeOf(obj); // { greetWorld: [Function: greetWorld] }
+
+obj.greetWorld(); // hello, world!
+````
+
+Passing keys with no predefined value:
+
+````JavaScript
 const factoryFunction = factory.create(proto, ['key1', 'key2']);
 
 const obj = factoryFunction('val1', 'val2'); // { key1: 'val1', key2: 'val2' }
-
-Object.getPrototypeOf(obj); // { greetWorld: [Function: greetWorld] }
-
-obj.greetWorld(); // hello, world!
 ````
 
-With pre-assigned values:
+Passing properties:
 
 ````JavaScript
-const factoryFunction = factory.create(proto, [
-  'key1',
-  ['key2', 'My val was not passed!'],
-  ['method', () => "I'm a method!"],
-]);
+const factoryFunction = factory.create(proto, ['key1'], {
+  key2: 'val2',
+  method: () => "I'm a method!",
+}
+);
 
-const obj = factoryFunction('My val was passed!');
-
-//  {
-//    key1: 'My val was passed!',
-//    key2: 'My val was not passed!',
-//    method: [Function (anonymous)]
-//  }
+const obj = factoryFunction('val1'); // { key1: 'val1', key2: 'val2', method: [Function: method] }
 
 obj.method(); // I'm a method!
-
-Object.getPrototypeOf(obj); // { greetWorld: [Function: greetWorld] }
-
-obj.greetWorld(); // hello, world!
 ````
 
-With no arguments:
+Passing no arguments:
 
 ````JavaScript
 const factoryFunction = factory.create();
 
-const obj = factoryFunction();
+const obj = factoryFunction(); // {}
 
 Object.getPrototypeOf(obj); // [Object: null prototype] {}
 ````
@@ -166,8 +160,8 @@ const animalProto = {
 
 const animal = curry(factory.create)(animalProto);
 
-const lion = animal(['name', ['noise', 'Roar!']]);
-const eagle = animal(['name', ['noise', 'Caw!']]);
+const lion = animal(['name', { noise: 'Roar!' }]);
+const eagle = animal(['name', { noise: 'Caw!' }]);
 
 const leanne = lion('leanne'); // { name: 'leanne', noise: 'Roar!' }
 const ernie = eagle('ernie'); // { name: 'ernie', noise: 'Caw!' }
@@ -176,7 +170,7 @@ leanne.makeNoise(); // Roar!
 ernie.makeNoise(); // Caw!
 ````
 
-The method can be flipped, allowing for partial application of the properties parameter:
+The parameters can be flipped, allowing for partial application of the properties parameter:
 
 ````JavaScript
 const curry = require('curry-function');
@@ -196,12 +190,13 @@ const eagleProto = {
   },
 };
 
-const flip = (f) => (a, b) => f(b, a);
+const flip = (f) => (a, b, c) => f(b, c, a);
 
-const animal = curry(flip(factory.create))([
-  'name',
-  ['getType', function getType() { return this.type; }],
-]);
+const getType = function getType() {
+    return this.type;
+}
+
+const animal = curry(flip(factory.create))(['name'], { getType });
 
 const lion = animal(lionProto);
 const eagle = animal(eagleProto);
