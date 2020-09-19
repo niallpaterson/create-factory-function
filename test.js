@@ -32,8 +32,18 @@ it('returns a factory that assigns argument object as prototype, if passed an ob
     'should assign factory.create\'s object argument as prototype of returned object');
 });
 
-it('returns a factory that assigns array items as keys, if passed an array of keys, ', (t) => {
+it('returns a factory that assigns array items as keys, if passed an array of strings, ', (t) => {
   const keyArray = ['key1', 'key2'];
+  const obj = factory.create({}, keyArray)();
+  const actual = keyArray.every((key) => obj.hasOwnProperty(key));
+  const expected = true;
+
+  t.is(actual, expected,
+    'should assign array item as key of returned object');
+});
+
+it('can be passed symbols instead of keys, ', (t) => {
+  const keyArray = [Symbol('key1'), Symbol('key2')];
   const obj = factory.create({}, keyArray)();
   const actual = keyArray.every((key) => obj.hasOwnProperty(key));
   const expected = true;
