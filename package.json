@@ -1,6 +1,6 @@
 {
   "name": "create-factory-function",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Syntactically concise, curry-friendly convenience method for factory function creation. Given a properties array and a prototype object, returns a factory function that returns objects with the specified prototype and properties.",
   "main": "factory.js",
   "scripts": {
